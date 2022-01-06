@@ -1,0 +1,11 @@
+  use Carbon\Carbon;
+        $primer_dia = (new Carbon('first day of this month'))->toDateString();
+        $ultimo_dia = (new Carbon('last day of this month'))->toDateString();
+
+       $trabajo = DB::table('trabajos')
+            ->join('autor', 'tipo.trabajos', '=', 'trabajos.autor')
+            ->join('piezas', 'piezas.id', '=', 'piezas_estudiantes.id_pieza')
+            ->join('conciertos', 'conciertos.id', '=', 'piezas.id_concierto')
+            ->select('estudiantes.cedula', 'estudiantes.nombre', 'estudiantes.apellido', 'conciertos.id','conciertos.nombre as nombre_concierto', 'conciertos.fecha')
+            ->whereBetween('fecha',[$primer_dia,$ultimo_dia])
+            ->get()
